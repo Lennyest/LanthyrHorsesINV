@@ -1,0 +1,8 @@
+name: LanthyrHorseINV
+version: ${project.version}
+main: lanthyrhorseinv.lanthyrhorseinv.LanthyrHorseINV
+authors: [Laleem]
+description: Horse Inventories
+commands:
+  configreload:
+    description: some description
