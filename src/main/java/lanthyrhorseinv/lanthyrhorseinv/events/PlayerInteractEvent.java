@@ -64,6 +64,7 @@ public class PlayerInteractEvent implements Listener {
 
                     if (itemMetaClick.equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
                         player.sendMessage(ChatColor.WHITE + "Discord: "+ ChatColor.BLUE + "Lenny#5713");
+                        player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem");
                     }
                 }
 
