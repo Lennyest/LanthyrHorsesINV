@@ -48,7 +48,7 @@ public class PlayerInteractEvent implements Listener {
 
 
     @EventHandler
-    public static void inventoryClickEvent(InventoryClickEvent event) {
+    public void inventoryClickEvent(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             HumanEntity player = event.getWhoClicked();
             Material clicked = event.getCurrentItem().getType();
@@ -64,7 +64,7 @@ public class PlayerInteractEvent implements Listener {
 
                     if (itemMetaClick.equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
                         player.sendMessage(ChatColor.WHITE + "Discord: "+ ChatColor.BLUE + "Lenny#5713");
-                        player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem");
+                        player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem/Lenny");
                     }
                 }
 
@@ -132,7 +132,7 @@ public class PlayerInteractEvent implements Listener {
     }
 
     @EventHandler
-    public static void inventoryOpen(InventoryOpenEvent event)  {
+    public void inventoryOpen(InventoryOpenEvent event)  {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             Player player = (Player) event.getPlayer();
 
@@ -189,7 +189,7 @@ public class PlayerInteractEvent implements Listener {
         }
     }
     @EventHandler
-    public static void inventoryClose(InventoryCloseEvent event) {
+    public void inventoryClose(InventoryCloseEvent event) {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             Player player = (Player) event.getPlayer();
             File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + player.getUniqueId() + ".json");
