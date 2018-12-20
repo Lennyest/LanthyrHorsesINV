@@ -7,6 +7,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.thane.NMSUtils;
@@ -14,14 +17,13 @@ import org.thane.NMSUtils;
 import java.io.*;
 import java.nio.file.Files;
 
-public class HorseInventory implements CommandExecutor {
+public class HorseInventory implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player target = Bukkit.getPlayerExact(args[1]);
         if (command.getName().equalsIgnoreCase("HorseInventory")) {
             Player player = (Player) sender;
-            Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Horse Inventory");
+            Player target = Bukkit.getPlayerExact(args[1]);
 
             switch (args.length) {
                 case 0:
@@ -31,13 +33,11 @@ public class HorseInventory implements CommandExecutor {
                         player.sendMessage(ChatColor.WHITE + "" + ChatColor.STRIKETHROUGH + "----------------------------------");
                     }
                     return true;
-/*                case 1:
-                    player.sendMessage(ChatColor.RED + "Wrong usage! type /HorseInventory to view usage.");
-                    return true;*/
                 case 2:
                     if (player.hasPermission("HorseInventory.view")) {
-                        File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + target.getUniqueId() + ".json");
+                        Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Player Inventory");
 
+                        File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + target.getUniqueId() + ".json");
                             if (file.exists()) {
                                 ItemStack[] contents = new ItemStack[0];
                                 try {
@@ -61,5 +61,12 @@ public class HorseInventory implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    @EventHandler
+    public void playerOpen(InventoryOpenEvent event) {
+        if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Player Inventory")) {
+            event.setCancelled(true);
+        }
     }
 }

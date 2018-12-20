@@ -26,6 +26,7 @@ public final class LanthyrHorseINV extends JavaPlugin {
     @Override
     public void onEnable() {
         getCommand("HorseInventory").setExecutor(new HorseInventory());
+        getServer().getPluginManager().registerEvents(new HorseInventory(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteractEvent(), this);
     }
 

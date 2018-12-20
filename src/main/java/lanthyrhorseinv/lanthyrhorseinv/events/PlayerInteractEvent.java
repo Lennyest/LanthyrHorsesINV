@@ -52,17 +52,15 @@ public class PlayerInteractEvent implements Listener {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             HumanEntity player = event.getWhoClicked();
             Material clicked = event.getCurrentItem().getType();
-            String itemMetaClick = event.getCurrentItem().getItemMeta().getDisplayName();
             if (player instanceof Player) {
-
-                if (!(event.getClickedInventory() == null) && !(itemMetaClick == null) && !(clicked == null)) {
-                    if ((itemMetaClick.equalsIgnoreCase(ChatColor.RED + "NOTICE!")) && (clicked.equals(Material.PAPER))
+                if (!(event.getClickedInventory() == null) && !(event.getCurrentItem().getItemMeta().getDisplayName() == null) && !(clicked == null)) {
+                    if ((event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) && (clicked.equals(Material.PAPER))
                             ||
-                            (clicked.equals(Material.STAINED_GLASS_PANE)) && (itemMetaClick.equalsIgnoreCase(" "))) {
+                            (clicked.equals(Material.STAINED_GLASS_PANE)) && (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(" "))) {
                         event.setCancelled(true);
                     }
 
-                    if (itemMetaClick.equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
                         player.sendMessage(ChatColor.WHITE + "Discord: "+ ChatColor.BLUE + "Lenny#5713");
                         player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem/Lenny");
                     }
