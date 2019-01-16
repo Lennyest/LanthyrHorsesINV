@@ -19,6 +19,7 @@ import java.nio.file.Files;
 
 public class HorseInventory implements CommandExecutor, Listener {
 
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("HorseInventory")) {
@@ -37,7 +38,7 @@ public class HorseInventory implements CommandExecutor, Listener {
                     if (player.hasPermission("HorseInventory.view")) {
                         Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Player Inventory");
 
-                        File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + target.getUniqueId() + ".json");
+                        File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + "players" + File.separator + target.getUniqueId() + ".json");
                             if (file.exists()) {
                                 ItemStack[] contents = new ItemStack[0];
                                 try {

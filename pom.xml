@@ -83,7 +83,7 @@
             <artifactId>NMSUtils</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>F:/Development/Projects/LanthyrChatnColors/NMSUtils/target/NMSUtils.jar</systemPath>
+            <systemPath>G:/1.13 server/plugins/NMSUtils-BETA-0.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

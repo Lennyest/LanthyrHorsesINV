@@ -1,9 +1,12 @@
 package lanthyrhorseinv.lanthyrhorseinv.events;
 
 import lanthyrhorseinv.lanthyrhorseinv.LanthyrHorseINV;
+import lanthyrhorseinv.lanthyrhorseinv.Serialization.InvSerialization;
+import lanthyrhorseinv.lanthyrhorseinv.Serialization.Serialization;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -14,8 +17,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.HorseInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.thane.NMSUtils;
 
@@ -27,14 +32,14 @@ import static lanthyrhorseinv.lanthyrhorseinv.LanthyrHorseINV.returnHorse;
 
 public class PlayerInteractEvent implements Listener {
 
-   private static Inventory horseInventory = Bukkit.createInventory(null,  36, ChatColor.GREEN + "Horse Inventory");
+    private static Inventory horseInventory = Bukkit.createInventory(null, 36, ChatColor.GREEN + "Horse Inventory");
 
     @EventHandler
     public void horseInteract(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         if (event.getRightClicked() instanceof AbstractHorse) {
             if (player.isSneaking() && event.getRightClicked().getType().equals(EntityType.HORSE)) {
-                AbstractHorse horse = (AbstractHorse)event.getRightClicked();
+                AbstractHorse horse = (AbstractHorse) event.getRightClicked();
                 if (returnHorse().getDM().isHorseOwnedBy(player.getUniqueId(), horse.getUniqueId())) {
                     event.setCancelled(true);
                     player.openInventory(horseInventory);
@@ -49,88 +54,35 @@ public class PlayerInteractEvent implements Listener {
 
     @EventHandler
     public void inventoryClickEvent(InventoryClickEvent event) {
-        if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
-            HumanEntity player = event.getWhoClicked();
-            Material clicked = event.getCurrentItem().getType();
-            if (player instanceof Player) {
-                if (!(event.getClickedInventory() == null) && !(event.getCurrentItem().getItemMeta().getDisplayName() == null) && !(clicked == null)) {
-                    if ((event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) && (clicked.equals(Material.PAPER))
-                            ||
-                            (clicked.equals(Material.STAINED_GLASS_PANE)) && (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(" "))) {
-                        event.setCancelled(true);
-                    }
+        if (!event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
+            return;
+        }
 
-                    if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
-                        player.sendMessage(ChatColor.WHITE + "Discord: "+ ChatColor.BLUE + "Lenny#5713");
-                        player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem/Lenny");
-                    }
-                }
+        Material clicked = event.getCurrentItem().getType();
+        HumanEntity player = event.getWhoClicked();
 
-                switch (event.getCurrentItem().getType()) {
-                    case BLACK_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case SILVER_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case WHITE_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case RED_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case YELLOW_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case BLUE_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case PURPLE_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case PINK_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case ORANGE_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case BROWN_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case CYAN_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case GRAY_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case GREEN_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case LIGHT_BLUE_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case LIME_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case MAGENTA_SHULKER_BOX:
-                        event.setCancelled(true);
-                        break;
-                    case POTION:
-                        event.setCancelled(true);
-                        break;
-                    case LINGERING_POTION:
-                        event.setCancelled(true);
-                        break;
-                    case SPLASH_POTION:
-                        event.setCancelled(true);
-                        break;
-                }
-            }
+        if (event.getClickedInventory() == null || !event.getCurrentItem().hasItemMeta()) {
+            return;
+        }
+
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
+            return;
+        }
+
+        if ((event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) && (clicked.equals(Material.PAPER))
+                ||
+                (clicked.equals(Material.STAINED_GLASS_PANE)) && (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(" "))) {
+            event.setCancelled(true);
+        }
+
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NOTICE!")) {
+            player.sendMessage(ChatColor.WHITE + "Discord: " + ChatColor.BLUE + "Lenny#5713");
+            player.sendMessage(ChatColor.WHITE + "Plugin made by GreatThane and Laleem/Lenny");
         }
     }
 
     @EventHandler
-    public void inventoryOpen(InventoryOpenEvent event)  {
+    public void inventoryOpen(InventoryOpenEvent event) {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             Player player = (Player) event.getPlayer();
 
@@ -152,14 +104,7 @@ public class PlayerInteractEvent implements Listener {
             noteM.setLore(lore);
             note.setItemMeta(noteM);
 
-            File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + player.getUniqueId() + ".json");
-
-            ItemStack[] contents = new ItemStack[0];
-            try {
-                contents = NMSUtils.getGson().fromJson(new String(Files.readAllBytes(file.toPath())), ItemStack[].class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ItemStack[] contents = InvSerialization.toInventory(LanthyrHorseINV.getPlugin().cfg, "inventory." + player.getName()).getContents();
             horseInventory.setContents(contents);
 
             horseInventory.setItem(0, glasspane);
@@ -186,25 +131,24 @@ public class PlayerInteractEvent implements Listener {
             horseInventory.setItem(35, glasspane);
         }
     }
+
     @EventHandler
     public void inventoryClose(InventoryCloseEvent event) {
         if (event.getInventory().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Horse Inventory")) {
             Player player = (Player) event.getPlayer();
-            File file = new File(LanthyrHorseINV.getPlugin().getDataFolder().getAbsolutePath() + File.separatorChar + player.getUniqueId() + ".json");
+            InvSerialization.saveInventory(event.getInventory(), LanthyrHorseINV.getPlugin().cfg, "inventory." + player.getName());
 
-            String json = NMSUtils.getGson().toJson(horseInventory.getContents());
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
-                    out.print(json);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+            try {
+                LanthyrHorseINV.getPlugin().cfg.save(LanthyrHorseINV.getPlugin().inventoryFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                LanthyrHorseINV.getPlugin().cfg.load(LanthyrHorseINV.getPlugin().inventoryFile);
+            } catch (IOException | InvalidConfigurationException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

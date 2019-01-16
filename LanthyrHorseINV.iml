@@ -51,7 +51,7 @@
     <orderEntry type="module-library">
       <library name="Maven: org.thane:NMSUtils:1.0-SNAPSHOT">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../LanthyrChatnColors/NMSUtils/target/NMSUtils.jar!/" />
+          <root url="jar://G:/1.13 server/plugins/NMSUtils-BETA-0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
